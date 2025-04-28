@@ -1,6 +1,5 @@
 'use client'
 import axios from 'axios'; 
-import {AiFillGithub } from "react-icons/ai";
 import {FcGoogle} from "react-icons/fc";
 import { useCallback, useState} from 'react';
 import {
@@ -21,7 +20,7 @@ import LoginModal from './LoginModal';
 
 const RegisterModal= ()=>{
     const registerModal = useRegisterModal();
-    const LoginModal = useLoginModal();
+    const loginModal = useLoginModal();
     const [isLoading, setIsLoading] =useState(false);
 
     const {
@@ -40,9 +39,11 @@ const RegisterModal= ()=>{
     });
     const onSubmit: SubmitHandler<FieldValues> =(data)=>{
         setIsLoading(true);
+        
         axios.post('/api/register',data)
         .then(()=>{
             registerModal.onClose();
+            loginModal.onOpen();
         })
         .catch((error)=>{
           toast.error(`${error}`);
@@ -54,7 +55,7 @@ const RegisterModal= ()=>{
     const toggle=useCallback(
         () => {
          registerModal.onClose();
-         LoginModal.onOpen();
+         loginModal.onOpen();
         },
         [LoginModal,registerModal],
       )
