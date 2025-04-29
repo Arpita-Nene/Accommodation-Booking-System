@@ -5,6 +5,7 @@ import getListings from "../actions/getListings";
 import PropertiesClient from "./PropertiesClient"
 
 const PropertiesPage= async()=>{
+    
     const currentUser=await getCurrentUser();
 
     if(!currentUser){
@@ -20,6 +21,7 @@ const PropertiesPage= async()=>{
     const listings = await getListings({
         userId: currentUser.id
     });
+
     if(listings.length === 0){
         return(
             <ClientOnly>
@@ -30,11 +32,12 @@ const PropertiesPage= async()=>{
             </ClientOnly>
         )
     }
+
     return(
         <ClientOnly>
             <PropertiesClient
-            listings={listings}
-            currentUser={currentUser}
+                listings={listings}
+                currentUser={currentUser}
             />
         </ClientOnly>
     )

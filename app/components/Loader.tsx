@@ -1,6 +1,8 @@
 'use client';
+
 import { PuffLoader } from "react-spinners";
-const Loader=()=>{
+
+const Loader = () => {
     return(
         <div className="
         h-[70vh]
@@ -8,7 +10,6 @@ const Loader=()=>{
         flex-col
         justify-center
         items-center
-
         ">
             <PuffLoader
             size={100}

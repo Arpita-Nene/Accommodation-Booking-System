@@ -19,8 +19,11 @@ const PropertiesClient:React.FC<PropertiesClientProps>=({
     currentUser
 })=>{
     const router = useRouter();
+
     const [deletingId, setDeletingId] = useState('');
+
     const onCancel= useCallback(
+        
       (id: string) => {
         setDeletingId(id);
         axios.delete(`/api/listings/${id}`)

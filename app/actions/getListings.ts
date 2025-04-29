@@ -1,5 +1,5 @@
 import prisma from "@/app/libs/prismadb";
-import { start } from "repl";
+
 export interface IListingsParams{
     userId?:string;
     guestCount?:number;
@@ -24,7 +24,9 @@ export default async function getListings(
             endDate,
             category
             } = params;
+
         let query: any={};
+
         if(userId){
             query.userId= userId;
         }
@@ -34,17 +36,17 @@ export default async function getListings(
         }
         if(roomCount){
             query.roomCount={
-                gte:+roomCount
+                gte: +roomCount
             }
         }
         if(guestCount){
             query.guestCount={
-                gte:+guestCount
+                gte: +guestCount
             }
         }
         if(bathroomCount){
             query.bathroomCount={
-                gte:+bathroomCount
+                gte: +bathroomCount
             }
         }
         if(locationValue){
@@ -52,18 +54,17 @@ export default async function getListings(
         }
 
         if(startDate && endDate){
-            query.Not={
+            query.NOT={
                 reservations:{
                     some:{
                         OR:[
                             {
                                 endDate:{gte: startDate},
-                                startDate:{lte: startDate},
-
+                                startDate:{lte: startDate}
                             },
                             {
-                                startDate:{lte:endDate},
-                                ensDate:{gte:endDate}
+                                startDate:{lte: endDate},
+                                endDate:{gte: endDate}
                             }
                         ]
                     }
@@ -72,18 +73,18 @@ export default async function getListings(
         }
 
         const listings = await prisma.listing.findMany({
-            where:query,
+            where: query,
             orderBy:{
                 createdAt:'desc'
             }
         });
 
-        // const safeListings = listings.map((listing)=>({
-        //  ...listing,
-        //  createdAt: listing.createdAT.toStirng(),
-       // }));
-       // return safeListings;
-        return listings;
+        const safeListings = listings.map((listing)=>({
+         ...listing,
+         createdAt: listing.createdAt.toISOString(),
+       }));
+       
+       return safeListings;
     }
     catch(error:any){
         throw new Error(error);

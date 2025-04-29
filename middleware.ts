@@ -5,6 +5,6 @@ export const config={
         "/trips",
         "/reservations",
         "/properties",
-        "favourites",
+        "/favorites",
     ]
 }

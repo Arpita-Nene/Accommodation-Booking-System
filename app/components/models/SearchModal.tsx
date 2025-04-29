@@ -1,4 +1,5 @@
 'use client';
+
 import useSearchModal from "@/app/hooks/useSearchModal";
 import Modal from "./Modal";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -68,7 +69,7 @@ const SearchModal= ()=>{
         const url = qs.stringifyUrl({
             url:'/',
             query:updatedQuery
-        },{skipNull:true});
+        }, {skipNull:true});
 
         setStep(STEPS.LOCATION);
         searchModal.onClose();
