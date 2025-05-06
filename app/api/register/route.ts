@@ -10,6 +10,19 @@ export async function POST(
         name,
         password
     }=body;
+
+    // ✅ Check if email is already in use
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (existingUser) {
+    return new NextResponse("Email already in use", { status: 400 });
+  }
+
+
     const hashedPassword = await bcrypt.hash(password,12);
     const user= await prisma.user.create({
         data:{

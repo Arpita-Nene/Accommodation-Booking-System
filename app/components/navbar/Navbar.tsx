@@ -32,7 +32,14 @@ const Navbar: React.FC<NavbarProps> = ({
                     gap-3
                     md:gap-0
                     ">
-                        <Logo/>
+                     <div className="flex items-center gap-1.5">  {/* Reduced from gap-2 to gap-1.5 */}
+                    <Logo />
+                    <span className="text-2xl font-sans font-semibold tracking-normal" style={{ 
+                        color: '#7f69bf',
+                    }}>
+                        CozyHut
+                    </span>
+                </div>
                         <Search/>
                         <UserMenu currentUser={currentUser}/>
                        

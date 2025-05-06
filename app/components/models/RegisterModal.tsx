@@ -46,7 +46,7 @@ const RegisterModal= ()=>{
             loginModal.onOpen();
         })
         .catch((error)=>{
-          toast.error(`${error}`);
+          toast.error(error.response?.data || "Something went wrong");
         })
         .finally(()=>{
             setIsLoading(false);
@@ -74,6 +74,22 @@ const RegisterModal= ()=>{
            register={register}
            errors={errors}
            required/>
+
+            {/* <Input
+            id="email"
+            label="Email"
+            disabled={isLoading}
+            register={register("email", {
+                required: "Email is required",
+                pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email address",
+                },
+            })}
+            errors={errors}
+            required
+            /> */}
+
            <Input
            id="name"
            label="Name"
@@ -81,6 +97,7 @@ const RegisterModal= ()=>{
            register={register}
            errors={errors}
            required/>
+
            <Input
            id="password"
            label="Password"
@@ -89,6 +106,22 @@ const RegisterModal= ()=>{
            register={register}
            errors={errors}
            required/>
+
+            {/* <Input
+            id="password"
+            label="Password"
+            type="password"
+            disabled={isLoading}
+            register={register("password", {
+                required: "Password is required",
+                pattern: {
+                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                message: "Password must be at least 6 characters with 1 letter & 1 number",
+                },
+            })}
+            errors={errors}
+            required
+            /> */}
         </div>
 
     );
@@ -101,6 +134,7 @@ const RegisterModal= ()=>{
           icon={FcGoogle}
           onClick={()=>signIn('google')}
           />
+          
           {/* <Button
           outline
           label="continue with Github"
@@ -108,6 +142,7 @@ const RegisterModal= ()=>{
           onClick={()=>signIn('github')}
         
           /> */}
+
           <div className="
             text-neutral-500
             text-center

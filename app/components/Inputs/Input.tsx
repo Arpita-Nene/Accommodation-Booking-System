@@ -1,4 +1,7 @@
 'use client'
+import { UseFormRegisterReturn } from "react-hook-form";
+import { useEffect } from "react";
+import { toast } from 'react-hot-toast';
 import {BiDollar} from 'react-icons/bi';
 import { FieldErrors,
          FieldValues,
@@ -11,7 +14,9 @@ interface InputProps {
     disabled?:boolean;
     formatPrice?:boolean;
     required?:boolean;
+    // register: UseFormRegisterReturn;
     register:UseFormRegister<FieldValues>,
+    // register: ReturnType<UseFormRegister<FieldValues>>,
     errors:FieldErrors;
 }
 const Input: React.FC<InputProps> =({
@@ -24,6 +29,21 @@ const Input: React.FC<InputProps> =({
     required,
     errors
 })=>{
+
+    // useEffect(() => {
+    //     if (errors[id]?.message) {
+    //       toast.error(errors[id]?.message.toString());
+    //     }
+    //   }, [errors, id]);
+
+    useEffect(() => {
+        const message = errors[id]?.message;
+        if (typeof message === 'string') {
+          toast.dismiss(); // optional: prevents multiple toasts
+          toast.error(message);
+        }
+      }, [errors, id]);
+
     return(
         <div className="w-full relative">{
             formatPrice && (
@@ -40,7 +60,52 @@ const Input: React.FC<InputProps> =({
         <input
         id={id}
         disabled={disabled}
-        {...register(id,{required})}
+        //{...register(id,{required})}
+
+
+        // {...register(id, {
+        //     required: required ? `${label} is required` : false,
+        //     pattern: id === 'email'
+        //       ? {
+        //           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        //           message: 'Invalid email address',
+        //         }
+        //       : undefined,
+        //     minLength: id === 'password'
+        //       ? {
+        //           value: 6,
+        //           message: 'Password must be at least 6 characters',
+        //         }
+        //       : undefined,
+        //     validate: id === 'password'
+        //       ? (value) =>
+        //           /[A-Za-z]/.test(value) && /\d/.test(value) ||
+        //           "Password must contain letters and numbers"
+        //       : undefined
+        //   })}
+          
+
+        {...register(id, {
+            required: required ? `${label} is required` : false,
+            pattern: id === 'email'
+              ? {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Invalid email address',
+                }
+              : undefined,
+            minLength: id === 'password'
+              ? {
+                  value: 6,
+                  message: 'Password must be at least 6 characters',
+                }
+              : undefined,
+            validate: id === 'password'
+              ? (value) =>
+                  /[A-Za-z]/.test(value) && /\d/.test(value) ||
+                  "Password must contain letters and numbers"
+              : undefined,
+          })}
+
         placeholder=" "
         type={type}
         className={`
@@ -61,7 +126,8 @@ const Input: React.FC<InputProps> =({
         ${errors[id] ?'focus:border-rose-500'  : 'focus:border-black'}
         // ${errors[id] ? 'border-rose-500' : 'border-[#ccc]'}
         // ${errors[id] ? 'focus:border-rose-500' : 'focus:border-[#7f69bf]'}
-`}
+        //bg-[#7f69bf]
+        `}
         />
         <label className={`
         absolute
