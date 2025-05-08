@@ -1,8 +1,7 @@
 'use client'
-import { UseFormRegisterReturn } from "react-hook-form";
 import { useEffect } from "react";
 import { toast } from 'react-hot-toast';
-import {BiDollar} from 'react-icons/bi';
+import {BiRupee} from 'react-icons/bi';
 import { FieldErrors,
          FieldValues,
          UseFormRegister
@@ -15,9 +14,11 @@ interface InputProps {
     formatPrice?:boolean;
     required?:boolean;
     // register: UseFormRegisterReturn;
-    register:UseFormRegister<FieldValues>,
+    register?:UseFormRegister<FieldValues>,
     // register: ReturnType<UseFormRegister<FieldValues>>,
-    errors:FieldErrors;
+    errors?:FieldErrors;
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const Input: React.FC<InputProps> =({
     id,
@@ -36,10 +37,18 @@ const Input: React.FC<InputProps> =({
     //     }
     //   }, [errors, id]);
 
+    // useEffect(() => {
+    //     const message = errors[id]?.message;
+    //     if (typeof message === 'string') {
+    //       toast.dismiss(); // optional: prevents multiple toasts
+    //       toast.error(message);
+    //     }
+    //   }, [errors, id]);
     useEffect(() => {
+        if (!errors || !errors[id]) return; // Add this check
         const message = errors[id]?.message;
         if (typeof message === 'string') {
-          toast.dismiss(); // optional: prevents multiple toasts
+          toast.dismiss();
           toast.error(message);
         }
       }, [errors, id]);
@@ -47,7 +56,7 @@ const Input: React.FC<InputProps> =({
     return(
         <div className="w-full relative">{
             formatPrice && (
-                <BiDollar
+                <BiRupee
                 size={24}
                 className="text-neutral-700
                 absolete
@@ -60,32 +69,8 @@ const Input: React.FC<InputProps> =({
         <input
         id={id}
         disabled={disabled}
-        //{...register(id,{required})}
-
-
+        {...(register ? register(id, {
         // {...register(id, {
-        //     required: required ? `${label} is required` : false,
-        //     pattern: id === 'email'
-        //       ? {
-        //           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        //           message: 'Invalid email address',
-        //         }
-        //       : undefined,
-        //     minLength: id === 'password'
-        //       ? {
-        //           value: 6,
-        //           message: 'Password must be at least 6 characters',
-        //         }
-        //       : undefined,
-        //     validate: id === 'password'
-        //       ? (value) =>
-        //           /[A-Za-z]/.test(value) && /\d/.test(value) ||
-        //           "Password must contain letters and numbers"
-        //       : undefined
-        //   })}
-          
-
-        {...register(id, {
             required: required ? `${label} is required` : false,
             pattern: id === 'email'
               ? {
@@ -104,7 +89,7 @@ const Input: React.FC<InputProps> =({
                   /[A-Za-z]/.test(value) && /\d/.test(value) ||
                   "Password must contain letters and numbers"
               : undefined,
-          })}
+          }):{})}
 
         placeholder=" "
         type={type}
@@ -122,10 +107,9 @@ const Input: React.FC<InputProps> =({
         disabled:opacity-70
         disabled:cursor-not-allowed
         ${formatPrice ? 'pl-9' : 'pl-4'}
-        ${errors[id] ?'border-rose-500'  : 'border-neutral-300'}
-        ${errors[id] ?'focus:border-rose-500'  : 'focus:border-black'}
-        // ${errors[id] ? 'border-rose-500' : 'border-[#ccc]'}
-        // ${errors[id] ? 'focus:border-rose-500' : 'focus:border-[#7f69bf]'}
+        ${errors?.[id] ?'border-rose-500'  : 'border-neutral-300'}
+        ${errors?.[id] ?'focus:border-rose-500'  : 'focus:border-black'}
+        
         //bg-[#7f69bf]
         `}
         />
@@ -143,8 +127,7 @@ const Input: React.FC<InputProps> =({
         peer-placeholder-shown:translate-y-0
         peer-focus:scale-75
         peer-focus:-translate-y-4
-        ${errors[id]? 'text-rose-500':'text-zinc-400'}
-        // ${errors[id] ? 'text-rose-500' : 'text-[#7f69bf]'}
+        ${errors?.[id]? 'text-rose-500':'text-zinc-400'}
         `}>{label}</label>
         </div>
     )

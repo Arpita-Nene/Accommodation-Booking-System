@@ -96,6 +96,19 @@ const LoginModal= ()=>{
     const footerContent=(
         <div className="flex flex-col gap-4 mt-3">
             <hr/>
+            {/* <Button
+      label="Reset Password"
+      onClick={() => {
+        const email = prompt("Enter test email:");
+        const newPassword = prompt("Set new password:");
+        if (email && newPassword) {
+          axios.post('/api/reset-password', { email, newPassword })
+            .then(() => toast.success("Password reset!"))
+            .catch(() => toast.error("Reset failed"));
+        }
+      }}
+    /> */}
+    
           <Button
           outline
           label ="continue with Google"
@@ -108,6 +121,8 @@ const LoginModal= ()=>{
           icon={AiFillGithub}
           onClick={()=>signIn('github')}
           /> */}
+           {/* Add this button for manual reset */}
+   
           <div className="
             text-neutral-500
             text-center
